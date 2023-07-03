@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLayer.Concrete;
+using DataAccessLayer.EntityFramework;
+using EntityLayer.Concrete;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Core_Proje.Controllers
 {
@@ -16,5 +19,19 @@ namespace Core_Proje.Controllers
         { 
             return PartialView();
         }
-    }
+        [HttpGet]
+        public PartialViewResult SendMessage() 
+        {
+            return PartialView();
+        }
+        [HttpPost]
+		public PartialViewResult SendMessage(Message p)
+		{
+			SendMessageManager messageManager = new SendMessageManager(new EfMessageDal());
+			p.Date = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+			p.Status = true;
+			messageManager.TAdd(p);
+			return PartialView();
+		}
+	}
 }
